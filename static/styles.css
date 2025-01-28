@@ -1,0 +1,116 @@
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+thead tr {
+    background-color: #f4f4f4;
+}
+
+/* Intensity-based coloring */
+.intensity-low td:last-child {
+    color: #1e7e34;
+    font-weight: bold;
+}
+
+.intensity-medium td:last-child {
+    color: #fd7e14;
+    font-weight: bold;
+}
+
+.intensity-high td:last-child {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Weather summary styling */
+.weather-summary p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.weather-summary .temperature,
+.weather-summary .humidity,
+.weather-summary .wind-speed,
+.weather-summary .fire-risk {
+    font-weight: bold;
+}
+
+/* Fire risk level styling */
+.fire-risk.low {
+    color: #1e7e34;
+}
+
+.fire-risk.medium {
+    color: #fd7e14;
+}
+
+.fire-risk.high {
+    color: #dc3545;
+}
+
+/* Summary section */
+.summary {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.summary div {
+    width: 30%;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.summary .high {
+    background-color: #dc3545;
+}
+
+.summary .medium {
+    background-color: #fd7e14;
+}
+
+.summary .low {
+    background-color: #1e7e34;
+}
+
+/* Map container styling */
+#map {
+    height: 400px;
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}

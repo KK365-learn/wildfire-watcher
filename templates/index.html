@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forest Fire Risk Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- <h1>Forest Fire Risk Detection</h1> -->
+
+        <!-- Form Section -->
+        <div id="form-section">
+            <h1 class="text-4xl font-bold text-center">Forest Fire Risk Detection</h1>
+            <p class="text-lg text-center mb-6">Enter your location and desired date range to evaluate the fire risk in your area.</p>
+            <form method="POST" class="space-y-4">
+                <div>
+                    <label for="location" class="block text-sm font-medium">Location:</label>
+                    <input 
+                        type="text" 
+                        id="location" 
+                        name="location" 
+                        placeholder="Enter location (e.g., Los Angeles)" 
+                        class="w-full border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
+                    >
+                </div>
+                <div>
+                    <label for="date" class="block text-sm font-medium">Start Date (YYYY-MM-DD):</label>
+                    <input 
+                        type="date" 
+                        id="date" 
+                        name="date" 
+                        class="w-full border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
+                    >
+                </div>
+                <div>
+                    <label for="range" class="block text-sm font-medium">Number of Days (1-10):</label>
+                    <input 
+                        type="number" 
+                        id="range" 
+                        name="range" 
+                        min="1" 
+                        max="10" 
+                        placeholder="Enter a number (e.g., 1-10)" 
+                        class="w-full border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
+                    >
+                </div>
+                <button 
+                    type="submit" 
+                    class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600">
+                    Get Fire Risk
+                </button>
+            </form>
+        </div>
+
+        <!-- Go Back Button -->
+        <button id="backButton" style="display:none;" onclick="showForm()">Go Back to Form</button>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <!-- Result Section -->
+        {% if location %}
+            <div id="result-section">
+                <h1>Today's Weather for {{ location }}</h1>
+                <div class="weather-summary">
+                    <p><strong>Temperature:</strong> <span class="temperature">{{ temperature }}</span></p>
+                    <p><strong>Humidity:</strong> <span class="humidity">{{ humidity }}</span></p>
+                    <p><strong>Wind Speed:</strong> <span class="wind-speed">{{ wind_speed }}</span></p>
+                    <p><strong>Fire Risk Level:</strong> <span class="fire-risk {{ risk_level|lower }}">{{ risk_level }}</span></p>
+                    <p><strong>Recommendations:</strong> <span class="recommendations">{{ recommendations }}</span></p>
+                </div>
+
+                <h2>Fire Map (Data from {{ start_date }} to {{ end_date }}):</h2>
+                <div id="map" style="height: 400px;"></div> <!-- Map container -->
+
+                <h2>Fire Metrics for selected date range:</h2>
+                <!-- <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Brightness (TI4)</th>
+                            <th>Brightness (TI5)</th>
+                            <th>Intensity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fire in fire_data %}
+                        <tr class="intensity-{{ fire.intensity|lower }}">
+                            <td>{{ fire.date }}</td>
+                            <td>{{ fire.bright_ti4 }}</td>
+                            <td>{{ fire.bright_ti5 }}</td>
+                            <td>{{ fire.intensity }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> -->
+
+                <h2>Summary of Fire Data:</h2>
+                <div class="summary">
+                    <div class="high">
+                        <h3>High Intensity Fires</h3>
+                        <p>{{ intensity_summary.High }}</p>
+                    </div>
+                    <div class="medium">
+                        <h3>Medium Intensity Fires</h3>
+                        <p>{{ intensity_summary.Medium }}</p>
+                    </div>
+                    <div class="low">
+                        <h3>Low Intensity Fires</h3>
+                        <p>{{ intensity_summary.Low }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                // JavaScript to hide the form and show the result
+                function showForm() {
+                    document.getElementById("form-section").style.display = "block";  // Show the form
+                    document.getElementById("result-section").style.display = "none";  // Hide the result section
+                    document.getElementById("backButton").style.display = "none";  // Hide the go back button
+                }
+
+                // Hide the form and show the result section after submission
+                {% if location %}
+                    document.getElementById("form-section").style.display = "none";  // Hide the form
+                    document.getElementById("result-section").style.display = "block";  // Show the result section
+                    document.getElementById("backButton").style.display = "block";  // Show the go back button
+                {% endif %}
+
+                // Map Initialization
+                var fireData = {{ fire_data|tojson|default('[]') }};
+                var lat = {{ lat }};
+                var lon = {{ lon }};
+                // var start_date = {{ start_date }}
+            
+                var map = L.map('map').setView([lat, lon], 12); // Center map at user's location
+            
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+            
+                fireData.forEach(function(fire) {
+                    if (!fire.latitude || !fire.longitude) {
+                        console.warn("Skipping fire data with missing coordinates:", fire);
+                        return;
+                    }
+            
+                    L.marker([fire.latitude, fire.longitude])
+                        .addTo(map)
+                        .bindPopup(
+                            `<b>Fire Alert</b><br>
+                             Brightness (TI4): ${fire.bright_ti4}<br>
+                             Brightness (TI5): ${fire.bright_ti5}<br>
+                             Confidence: ${fire.confidence}<br>
+                             Acquisition Date: ${fire.acq_date}<br>
+                             Time: ${fire.acq_time}<br>
+                             Instrument: ${fire.instrument}<br>
+                             Satellite: ${fire.satellite}`
+                        );
+                });
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    if ("{{ location }}") {
+                        document.getElementById("form-section").style.display = "none";
+                        document.getElementById("result-section").style.display = "block";
+                        document.getElementById("backButton").style.display = "block";
+                    }
+                });
+            </script>
+                
+        {% endif %}
+    </div>
+</body>
+</html>
