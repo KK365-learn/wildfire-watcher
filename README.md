@@ -1,6 +1,6 @@
 # Wildfire Watcher 🔥
 
-A web application to detect and monitor forest fire risks using weather and fire data. This app leverages OpenAI's GPT for risk analysis and NASA's FIRMS API for fire data.
+A web application for detecting and monitoring forest fire risks using real-time weather and fire data. It integrates OpenAI's GPT for risk analysis, NASA's FIRMS API for fire data, and the Weather API for up-to-date weather conditions.
 
 ## Features
 - **Forest Fire Risk Detection**: Analyze the risk level of forest fires based on weather conditions.
