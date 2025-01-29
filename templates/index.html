@@ -14,31 +14,31 @@
         <!-- <h1>Forest Fire Risk Detection</h1> -->
 
         <!-- Form Section -->
-        <div id="form-section">
+        <div id="form-section" class="ce">
             <h1 class="text-4xl font-bold text-center">Forest Fire Risk Detection</h1>
-            <p class="text-lg text-center mb-6">Enter your location and desired date range to evaluate the fire risk in your area.</p>
+            <h3>Enter your location and desired date range to evaluate the fire risk in your area.</h3>
             <form method="POST" class="space-y-4">
-                <div>
-                    <label for="location" class="block text-sm font-medium">Location:</label>
+                <div style="font-size: 25px;">
+                    <label for="location" class="block  font-medium">Location:</label>
                     <input 
                         type="text" 
                         id="location" 
                         name="location" 
                         placeholder="Enter location (e.g., Los Angeles)" 
-                        class="w-full border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
+                        class="w-full border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500 text-base" 
                     >
                 </div>
-                <div>
-                    <label for="date" class="block text-sm font-medium">Start Date (YYYY-MM-DD):</label>
+                <div style="font-size: 25px;">
+                    <label for="date" class="block  font-medium">Start Date (YYYY-MM-DD):</label>
                     <input 
                         type="date" 
                         id="date" 
                         name="date" 
-                        class="w-full border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
+                        class="w-full border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500 text-base" 
                     >
                 </div>
-                <div>
-                    <label for="range" class="block text-sm font-medium">Number of Days (1-10):</label>
+                <div style="font-size: 25px;">
+                    <label for="range" class="block  font-medium">Number of Days (1-10):</label>
                     <input 
                         type="number" 
                         id="range" 
@@ -46,19 +46,20 @@
                         min="1" 
                         max="10" 
                         placeholder="Enter a number (e.g., 1-10)" 
-                        class="w-full border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500"
+                        class="w-full border border-gray-300 rounded-lg p-2 focus:ring-green-500 focus:border-green-500 text-base" 
                     >
                 </div>
                 <button 
+                    id="subitButton"
                     type="submit" 
-                    class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600">
+                    class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 text-base">
                     Get Fire Risk
                 </button>
             </form>
         </div>
 
         <!-- Go Back Button -->
-        <button id="backButton" style="display:none;" onclick="showForm()">Go Back to Form</button>
+        <button id="backButton" style="display:none; background-color: blue;" onclick="showForm()">Go Back to Form</button>
 
         {% if error %}
             <div class="error">{{ error }}</div>
@@ -68,40 +69,18 @@
         {% if location %}
             <div id="result-section">
                 <h1>Today's Weather for {{ location }}</h1>
-                <div class="weather-summary">
-                    <p><strong>Temperature:</strong> <span class="temperature">{{ temperature }}</span></p>
-                    <p><strong>Humidity:</strong> <span class="humidity">{{ humidity }}</span></p>
-                    <p><strong>Wind Speed:</strong> <span class="wind-speed">{{ wind_speed }}</span></p>
-                    <p><strong>Fire Risk Level:</strong> <span class="fire-risk {{ risk_level|lower }}">{{ risk_level }}</span></p>
-                    <p><strong>Recommendations:</strong> <span class="recommendations">{{ recommendations }}</span></p>
+                <div class="weather-summary" style="font-size: 30px;">
+                    <p style="font-size: 25px;text-align: center;"><strong>Temperature:</strong> <span class="temperature">{{ temperature }}</span></p>
+                    <p style="font-size: 25px;text-align: center"><strong>Humidity:</strong> <span class="humidity">{{ humidity }}</span></p>
+                    <p style="font-size: 25px;text-align: center"><strong>Wind Speed:</strong> <span class="wind-speed">{{ wind_speed }}</span></p>
+                    <p style="font-size: 25px;text-align: center"><strong>Fire Risk Level:</strong> <span class="fire-risk {{ risk_level|lower }}">{{ risk_level }}</span></p>
+                    <p style="font-size: 25px;text-align: center"><strong>Recommendations:</strong> <span class="recommendations">{{ recommendations }}</span></p>
                 </div>
 
                 <h2>Fire Map (Data from {{ start_date }} to {{ end_date }}):</h2>
                 <div id="map" style="height: 400px;"></div> <!-- Map container -->
 
                 <h2>Fire Metrics for selected date range:</h2>
-                <!-- <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Brightness (TI4)</th>
-                            <th>Brightness (TI5)</th>
-                            <th>Intensity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for fire in fire_data %}
-                        <tr class="intensity-{{ fire.intensity|lower }}">
-                            <td>{{ fire.date }}</td>
-                            <td>{{ fire.bright_ti4 }}</td>
-                            <td>{{ fire.bright_ti5 }}</td>
-                            <td>{{ fire.intensity }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table> -->
-
-                <h2>Summary of Fire Data:</h2>
                 <div class="summary">
                     <div class="high">
                         <h3>High Intensity Fires</h3>

@@ -18,27 +18,46 @@ A web application to detect and monitor forest fire risks using weather and fire
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone git@github.com:KK365-learn/wildfire-watcher.git
+    git clone git@github.com:KK365-learn/wildfire-watcher.git
+   ```
 2. Navigate to the project directory:
-  ```bash
-  cd wildfire-watcher
+    ```bash
+    cd wildfire-watcher
+    ```
 3. Install dependencies:
-  ```bash
-  pip install -r requirements.txt
+    ```bash
+    pip install -r requirements.txt
+    ```
 4. Set up environment variables:
   Create a .env file and add your API keys:
   Edit
-    OPENAI_API_KEY=your_openai_api_key
-    MAP_KEY=your_nasa_firms_api_key
+    ```bash
+    vi .env 
+    ```
+    add these contents
+    ```bash
+      OPENAI_API_KEY=<your_openai_api_key>
+      MAP_KEY=<your_nasa_firms_api_key>
+      WEATHER_API_KEY=<Weather_api_key>
+    ```
+    ```html
+    OPEN API key  : https://platform.openai.com/
+    Map key       : https://firms.modaps.eosdis.nasa.gov/api/
+    Weather Key   : https://www.weatherapi.com/
+    ```
 5. Run the app:
   ```bash
   python app.py
+  ```
 
 Usage
   1. Enter a location, start date, and number of days to analyze.
   2. View risk levels, fire activity, and recommendations.
 
 Screenshots
-  A. Home Page
-  B. Results Page
+  1. Home Page:
+    ![Alt text](images/fire_input.jpg)
+    
+  2. Results Page:
+    ![image info](images/fire_report.jpg)
 

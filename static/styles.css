@@ -5,6 +5,8 @@ body {
     padding: 0;
     background-color: #f9f9f9;
     color: #333;
+    font-size: 25px;
+    flex: auto;
 }
 
 .container {
@@ -16,7 +18,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2 {
+h1, h2, h3 {
     text-align: center;
     color: #2c3e50;
 }
@@ -114,3 +116,38 @@ thead tr {
     border: 1px solid #ddd;
     border-radius: 10px;
 }
+
+
+input[type="text"], input[type="date"],input[type="number"] {
+    width: 300px; 
+    height: 40px; 
+    padding: 10px; /* Adds internal space within the input field */
+    border: 1px solid #ccc; /* Optional: Adds a border style */
+    font-size: 25px;
+  }
+
+  form {
+    text-align: center;
+    margin: 0 auto; 
+  }
+
+ button {
+
+    background-color: red; /* Blue background color */
+
+    color: white; /* White text color */
+
+    padding: 10px 20px; /* Add padding around text */
+
+    border: none; /* Remove default border */
+
+    border-radius: 5px; /* Rounded corners */
+
+    font-size: 25px; /* Text size */
+
+    width: 250px; /* Button width */
+
+    height: 60px; /* Button height */ 
+
+}
+
